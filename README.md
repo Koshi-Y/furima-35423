@@ -17,26 +17,25 @@
 
 - has_many :comments
 - has_many :items
-- has_one  :managements
+- has_many :managements
 
 ## items テーブル
 
-| Column        | Type       | Options                        |
-| ------------- | ---------- | ------------------------------ |
-| item_name     | string     | null: false                    |
-| description   | text       | null: false                    |
-| category      | string     | null: false                    |
-| condition     | string     | null: false                    |
-| price         | integer    | null: false                    |
-| charges       | integer    | null: false                    |
-| area          | string     | null: false                    |
-| delivery_date | string     | null: false                    |
-| user          | references | null: false, foreign_key: true |
+| Column           | Type       | Options                        |
+| ---------------- | ---------- | ------------------------------ |
+| item_name        | string     | null: false                    |
+| description      | text       | null: false                    |
+| category_id      | integer    | null: false                    |
+| condition_id     | integer    | null: false                    |
+| price            | integer    | null: false                    |
+| charges_id       | integer    | null: false                    |
+| area_id          | integer    | null: false                    |
+| delivery_date_id | integer    | null: false                    |
+| user             | references | null: false, foreign_key: true |
 
 ### Association
 
 - has_many   :comments
-- has_one    :buyers
 - has_one    :managements
 - belongs_to :user
 
@@ -58,16 +57,16 @@
 | Column         | Type       | Options                        |
 | -------------- | ---------- | ------------------------------ |
 | postal_code    | string     | null: false                    |
+| prefectures    | string     | null: false                    |
 | address1       | string     | null: false                    |
 | address2       | string     | null: false                    |
 | building_name  | string     |                                |
 | phone_num      | string     | null: false                    |
-| item           | references | null: false, foreign_key: true |
+| management     | references | null: false, foreign_key: true |
 
 ### Association
 
-- belongs_to :item
-- belongs_to :user
+- belongs_to :management
 
 ## managements テーブル
 
@@ -80,3 +79,4 @@
 
 - belongs_to :user
 - belongs_to :item
+- has_many   :buyers
