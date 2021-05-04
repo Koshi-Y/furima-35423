@@ -29,14 +29,14 @@
 | condition_id     | integer    | null: false                    |
 | price            | integer    | null: false                    |
 | charges_id       | integer    | null: false                    |
-| area_id          | integer    | null: false                    |
+| prefectures_id   | integer    | null: false                    |
 | delivery_date_id | integer    | null: false                    |
 | user             | references | null: false, foreign_key: true |
 
 ### Association
 
 - has_many   :comments
-- has_one    :managements
+- has_one    :management
 - belongs_to :user
 
 ## comments テーブル
@@ -51,13 +51,14 @@
 
 - belongs_to :user
 - belongs_to :item
+- belongs_to :management
 
 ## buyers テーブル
 
 | Column         | Type       | Options                        |
 | -------------- | ---------- | ------------------------------ |
 | postal_code    | string     | null: false                    |
-| prefectures    | string     | null: false                    |
+| prefectures_id | integer    | null: false                    |
 | address1       | string     | null: false                    |
 | address2       | string     | null: false                    |
 | building_name  | string     |                                |
@@ -79,4 +80,4 @@
 
 - belongs_to :user
 - belongs_to :item
-- has_many   :buyers
+- has_one    :buyers
