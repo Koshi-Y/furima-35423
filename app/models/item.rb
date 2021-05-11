@@ -15,10 +15,10 @@ class Item < ApplicationRecord
   validates :description,      presence: true
   validates :category_id,      presence: true, numericality: { other_than: 1 }
   validates :condition_id,     presence: true, numericality: { other_than: 1 }
-  validates :price,            presence: true, numericality: {in: 300..9999999}, format: { with: /\A[0-9]+\z/ }
-  validates :charges_id,       presence: true
+  validates :price,            presence: true, inclusion: { in: 300..9999999 }, format: { with: /\A[0-9]+\z/ }
+  validates :charges_id,       presence: true, numericality: { other_than: 1 }
   validates :prefecture_id,    presence: true, numericality: { other_than: 1 }
-  validates :delivery_date_id, presence: true
+  validates :delivery_date_id, presence: true, numericality: { other_than: 1 }
 
   
 
