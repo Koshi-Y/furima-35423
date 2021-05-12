@@ -7,7 +7,7 @@ class ItemsController < ApplicationController
   def new
     @item = Item.new
   end
-  
+
   def create
     @item = Item.new(item_params)
     if @item.save
@@ -17,12 +17,14 @@ class ItemsController < ApplicationController
     end
   end
 
-
+  def show
+    @item = Item.find(params[:id])
+  end
 
   private
 
   def item_params
-    params.require(:item).permit(:image, :item_name, :description, :category_id, :condition_id, :price, :charges_id, :prefecture_id, :delivery_date_id).merge(user_id: current_user.id)
+    params.require(:item).permit(:image, :item_name, :description, :category_id, :condition_id, :price, :charges_id,
+                                 :prefecture_id, :delivery_date_id).merge(user_id: current_user.id)
   end
-
 end
