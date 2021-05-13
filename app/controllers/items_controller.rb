@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :authenticate_user!, only: [:new, :create, :edit]
   def index
     @items = Item.all.order(created_at: :desc)
   end
@@ -24,6 +24,17 @@ class ItemsController < ApplicationController
   def edit
     @item = Item.find(params[:id])
   end
+
+  def update
+    @item = Item.find(params[:id])
+    @item.update(item_params)
+    if @item.save
+      redirect_to acction: :show
+    else
+      render :edit
+    end
+  end
+
 
   private
 
