@@ -1,19 +1,16 @@
 class BuyerManagement
   include ActiveModel::Model
-  attr_accessor :token, :postal_code, :prefecture_id, :address1, :address2, :building_name, :phone_num, :management_id, :user_id, :item_id  
+  attr_accessor :token, :postal_code, :prefecture_id, :address1, :address2, :building_name, :phone_num, :user_id, :item_id  
 
   with_options presence: true do
-    validates :management_id, :user_id, :item_id
-    validates :
+    validates :user_id, :item_id, :prefecture_id, :address1, :address2
+    validates :postal_code, format: {with: /\A[0-9]{3}-[0-9]{4}\z/, message: "is invalid. Include hyphen(-)"}
+    validates :phone_num, format: {with: /\A[0-9]+\z/, message: "is invalid"}
   end
 
   def save
     management = Management.create(user_id: user_id, item_id: item_id)
-
-    Address.create(:postal_code, :prefecture_id, :address1, :address2, :building_name, :phone_num, :management_id: management.id)
+    Buyer.create(postal_code: postal_code, prefecture_id: prefecture_id, address1: address1, address2: address2, building_name: building_name, phone_num: phone_num, management_id: management.id)
   end
 
 end
-
-
-
