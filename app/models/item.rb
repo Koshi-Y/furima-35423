@@ -5,6 +5,7 @@ class Item < ApplicationRecord
   belongs_to :condition
   belongs_to :delivery_date
   belongs_to :prefecture
+  has_one    :management
 
   has_one_attached :image
   belongs_to :user
