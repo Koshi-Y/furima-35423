@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe BuyerManagement, type: :model do
   before do
     @user = FactoryBot.create(:user)
-    @item = FactoryBot.create(:item,user_id: @user.id)
+    @item = FactoryBot.create(:item)
     @buyer_management = FactoryBot.build(:buyer_management, user_id: @user.id, item_id: @item.id)
     sleep 1
   end
@@ -13,6 +13,10 @@ RSpec.describe BuyerManagement, type: :model do
      it '必要な情報を入力すれば登録ができる' do
        expect(@buyer_management).to be_valid
      end
+     it 'building_nameは空でも登録できる' do
+       @buyer_management.building_name = ''
+       expect(@buyer_management).to be_valid
+     end
   end
 
   context '商品が購入できないとき' do
@@ -20,6 +24,11 @@ RSpec.describe BuyerManagement, type: :model do
       @buyer_management.postal_code = 1234567
       @buyer_management.valid?
       expect(@buyer_management.errors.full_messages).to include("Postal code is invalid. Include hyphen(-)")
+    end
+    it '郵便番号が空では登録できない' do
+      @buyer_management.postal_code = ''
+      @buyer_management.valid?
+      expect(@buyer_management.errors.full_messages).to include("Postal code can't be blank")
     end
     it '発送元の地域についての情報がないと登録できない' do
       @item.prefecture_id = ''
@@ -56,10 +65,25 @@ RSpec.describe BuyerManagement, type: :model do
       @buyer_management.valid?
       expect(@buyer_management.errors.full_messages).to include("Phone num is invalid")
     end
+    it '電話番号は英数混合では登録できない' do
+      @buyer_management.phone_num = '0a2s3a4s5a6'
+      @buyer_management.valid?
+      expect(@buyer_management.errors.full_messages).to include("Phone num is invalid")
+    end
     it "tokenが空では登録できないこと" do
       @buyer_management.token = nil
       @buyer_management.valid?
       expect(@buyer_management.errors.full_messages).to include("Token can't be blank")
+    end
+    it 'user_idが空では登録できない' do
+      @buyer_management.user_id = ''
+      @buyer_management.valid?
+      expect(@buyer_management.errors.full_messages).to include("User can't be blank")
+    end
+    it 'item_idが空では登録できない' do
+      @buyer_management.item_id = ''
+      @buyer_management.valid?
+      expect(@buyer_management.errors.full_messages).to include("Item can't be blank")
     end
 
 
