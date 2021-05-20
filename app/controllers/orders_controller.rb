@@ -1,9 +1,10 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item
+  before_action :move_to_index
 
   def index
-    if (@item.management == nil) && (current_user != @item.user)
+    if @item.management == nil
       @buyer_management = BuyerManagement.new
     else
       redirect_to root_path
@@ -38,6 +39,12 @@ class OrdersController < ApplicationController
 
     def set_item
       @item = Item.find(params[:item_id])
+    end
+
+    def move_to_index
+      if current_user == @item.user
+        redirect_to root_path
+      end
     end
 
 
