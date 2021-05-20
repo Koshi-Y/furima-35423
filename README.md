@@ -79,7 +79,7 @@
 
 - belongs_to :user
 - belongs_to :item
-- belongs_to :buyer
+- has_one :buyer
 
 
 
