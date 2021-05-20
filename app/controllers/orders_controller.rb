@@ -2,13 +2,10 @@ class OrdersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_item
   before_action :move_to_index
+  before_action :move_to_root, only:[:index, :create]
 
   def index
-    if @item.management == nil
-      @buyer_management = BuyerManagement.new
-    else
-      redirect_to root_path
-    end
+    
   end
 
   def create
@@ -43,6 +40,14 @@ class OrdersController < ApplicationController
 
     def move_to_index
       if (current_user == @item.user) || (@item.management.present? )
+        redirect_to root_path
+      end
+    end
+
+    def move_to_root
+      if @item.management == nil
+        @buyer_management = BuyerManagement.new
+      else
         redirect_to root_path
       end
     end
