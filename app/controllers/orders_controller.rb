@@ -1,9 +1,9 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_item
 
   def index
-    @item = Item.find(params[:item_id])
-    if @item.management == nil
+    if (@item.management == nil) && (current_user != @item.user)
       @buyer_management = BuyerManagement.new
     else
       redirect_to root_path
@@ -12,7 +12,6 @@ class OrdersController < ApplicationController
 
   def create
     @buyer_management = BuyerManagement.new(order_params)
-    @item = Item.find(params[:item_id])
     if @buyer_management.valid?
       pay_item
       @buyer_management.save
@@ -35,6 +34,10 @@ class OrdersController < ApplicationController
         card: order_params[:token],
         currency: 'jpy'      
       )
+    end
+
+    def set_item
+      @item = Item.find(params[:item_id])
     end
 
 
