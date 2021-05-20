@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user!, except: :index
+  before_action :authenticate_user!
   def index
     @buyer_management = BuyerManagement.new
     @item = Item.find(params[:item_id])
@@ -9,6 +9,7 @@ class OrdersController < ApplicationController
     @buyer_management = BuyerManagement.new(order_params)
     @item = Item.find(params[:item_id])
     if @buyer_management.valid?
+      pay_item
       @buyer_management.save
       redirect_to root_path
     else
@@ -19,7 +20,17 @@ class OrdersController < ApplicationController
   private
 
     def order_params
-      params.require(:buyer_management).permit(:postal_code, :prefecture_id, :address1, :address2, :building_name, :phone_num, :item_name).merge(user_id: current_user.id, item_id: params[:item_id])
+      params.require(:buyer_management).permit(:postal_code, :prefecture_id, :address1, :address2, :building_name, :phone_num, :item_name).merge(user_id: current_user.id, item_id: params[:item_id], token: params[:token])
     end
+
+    def pay_item
+      PPayjp.api_key = ENV["PAYJP_SECRET_KEY"]
+      Payjp::Charge.create(
+        amount: @item.price, 
+        card: order_params[:token],
+        currency: 'jpy'      
+      )
+    end
+
 
 end
