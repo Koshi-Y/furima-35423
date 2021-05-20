@@ -1,8 +1,13 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
+
   def index
-    @buyer_management = BuyerManagement.new
     @item = Item.find(params[:item_id])
+    if @item.management == nil
+      @buyer_management = BuyerManagement.new
+    else
+      redirect_to root_path
+    end
   end
 
   def create
