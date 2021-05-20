@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
   before_action :move_to_root, only:[:index, :create]
 
   def index
-    
+    @buyer_management = BuyerManagement.new
   end
 
   def create
@@ -45,9 +45,7 @@ class OrdersController < ApplicationController
     end
 
     def move_to_root
-      if @item.management == nil
-        @buyer_management = BuyerManagement.new
-      else
+      if @item.management.present?
         redirect_to root_path
       end
     end
