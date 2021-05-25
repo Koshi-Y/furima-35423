@@ -24,4 +24,13 @@ class Item < ApplicationRecord
       validates :delivery_date_id
     end
   end
+
+  def self.search(search)
+    if search != ""
+      Item.where('item_name LIKE(?)', "%#{search}%")
+    else
+      Item.all
+    end
+  end
+
 end
